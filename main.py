@@ -1,6 +1,5 @@
-
 if __name__ == '__main__':
-    #print("Welcome to Sequence Alignment!")
+    # print("Welcome to Sequence Alignment!")
     """
     Step 1: Reading input strings
     """
@@ -10,7 +9,8 @@ if __name__ == '__main__':
         for line in f:
             try:
                 idx = int(line)
-                stringForProcessing = stringForProcessing[:idx+1] + stringForProcessing + stringForProcessing[idx+1:]
+                stringForProcessing = stringForProcessing[:idx + 1] + stringForProcessing + stringForProcessing[
+                                                                                            idx + 1:]
                 """
                 Step 2: String generation based on input
                 """
@@ -21,20 +21,25 @@ if __name__ == '__main__':
         output_list.append(stringForProcessing)
 
     print(output_list)
+    file1 = open("output.txt", "a")  # append mode
+    file1.write(output_list+"\n")
+
     """
     Step 3: Matching steps
     """
 
-    def get_from_matrix(i, j, seq=['A', 'C', 'G', 'T'], matrix=[[0, 110, 48, 94], [110, 0, 118, 48], [48, 118, 0, 110], [94, 48, 110, 0]]):
+
+    def get_from_matrix(i, j, seq=['A', 'C', 'G', 'T'],
+                        matrix=[[0, 110, 48, 94], [110, 0, 118, 48], [48, 118, 0, 110], [94, 48, 110, 0]]):
         indexI = seq.index(i)
         indexJ = seq.index(j)
         return matrix[indexI][indexJ]
 
 
-    string1= output_list[0]
-    string2= output_list[1]
-  #  string1 = 'ACCGGTCG'
-   # string2 = 'CCAGGTGGC'
+    string1 = output_list[0]
+    string2 = output_list[1]
+    #  string1 = 'ACCGGTCG'
+    # string2 = 'CCAGGTGGC'
 
     cost = 0
     delta = 30
@@ -46,7 +51,7 @@ if __name__ == '__main__':
     i = 0
     j = 0
 
-    while (i < m and j < n):
+    while i < m and j < n:
         print ("i:", i)
         print ("j:", j)
 
@@ -85,11 +90,13 @@ if __name__ == '__main__':
         i += 1
         j += 1
 
-    print ("cost:",cost)
+    print ("cost:", cost)
 
     """
     Step 4: Cost generation
     """
+
+
     def get_cost(match_list, delta=30):
 
         seqA = match_list[0]
@@ -111,5 +118,7 @@ if __name__ == '__main__':
 
         return cost
 
-        #get_cost(output_list, delta, alpha): 'ACC1GGTCG1','1CCAGGTGGC'=208
-  #  print(get_cost(['ACC1GGTCG1','1CCAGGTGGC']),30)
+        # get_cost(output_list, delta, alpha): 'ACC1GGTCG1','1CCAGGTGGC'=208
+#  print(get_cost(['ACC1GGTCG1','1CCAGGTGGC']),30)
+    file1.write(cost + "\n")
+    file1.close()
