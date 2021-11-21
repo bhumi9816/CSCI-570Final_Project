@@ -33,7 +33,59 @@ if __name__ == '__main__':
 
     string1= output_list[0]
     string2= output_list[1]
+  #  string1 = 'ACCGGTCG'
+   # string2 = 'CCAGGTGGC'
 
+    cost = 0
+    delta = 30
+    m = len(string1)
+    print (m)
+
+    n = len(string2)
+    print (n)
+    i = 0
+    j = 0
+
+    while (i < m and j < n):
+        print ("i:", i)
+        print ("j:", j)
+
+        if i > (m - 1) or j > (n - 1):
+            cost += delta
+            i += 1
+            j += 1
+
+        elif string1[i] == string2[j]:
+            i += 1
+            j += 1
+        elif string1[i] != string2[j]:
+            if ((m - 1) > i and (n - 1) > j) and string1[i - 1] == string2[i - 1] and string1[i + 1] == string2[i + 1]:
+                cost += get_from_matrix(string1[i], string2[j])
+                i += 2
+                j += 2
+            elif j < (n - 1) and string1[i] == string2[j + 1]:
+                cost += delta
+                j += 2
+                i += 1
+            elif i < (m - 1) and string1[i + 1] == string2[j]:
+                cost += delta
+                i += 2
+                j += 1
+
+            else:
+                cost += delta
+                i += 1
+                j += 1
+
+    print ("i end:", i)
+    print ("j end:", j)
+
+    if i < m or j < n:
+        cost += delta
+        i += 1
+        j += 1
+
+    print ("cost:",cost)
 
     """
     Step 4: Cost generation
@@ -60,4 +112,4 @@ if __name__ == '__main__':
         return cost
 
         #get_cost(output_list, delta, alpha): 'ACC1GGTCG1','1CCAGGTGGC'=208
-    print(get_cost(['ACC1GGTCG1','1CCAGGTGGC']),30)
+  #  print(get_cost(['ACC1GGTCG1','1CCAGGTGGC']),30)
