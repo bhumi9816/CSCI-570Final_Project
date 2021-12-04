@@ -112,12 +112,12 @@ def cost_generator(str1, str2):
     #base-case: for each row initialize to i-incremental
     for i in range(1, l1+1):
         vertical_penalty += gap_penalty
-        score[i][0] += vertical_penalty
+        score[i][0] = vertical_penalty
 
     #for each column initialize to j-incremental
     for j in range(1, l2+1):
         horizontal_penalty += gap_penalty
-        score[0][j] += horizontal_penalty
+        score[0][j] = horizontal_penalty
 
     for line in score:
         print(line)
@@ -146,8 +146,6 @@ def cost_generator(str1, str2):
     #value = align_score(str1[indexJ - 1], str2[indexI - 1])
     #print("the returned value is ...", value)
 
-    total_score = 0
-
     while indexI > 0 and indexJ > 0:
         curr_score = score[indexJ][indexI]
         left_score = score[indexJ-1][indexI]
@@ -160,46 +158,35 @@ def cost_generator(str1, str2):
         if curr_score == diagonal_score + value:
             align_str1 += str1[indexJ-1]
             align_str2 += str2[indexI-1]
-            total_score += value
             indexI -= 1
             indexJ -= 1
 
         elif curr_score == up_score + gap_penalty:
             align_str1 += str1[indexJ-1]
             align_str2 += '-'
-            total_score += up_score
             indexJ -= 1
 
         elif curr_score == left_score + gap_penalty:
             align_str2 += str2[indexI-1]
             align_str1 += '-'
-            total_score += left_score
             indexI -= 1
 
     while indexJ > 0:
         align_str1 += str1[indexJ-1]
         align_str2 += '-'
-        total_score += gap_penalty
         indexJ -= 1
 
     while indexI > 0:
         align_str2 += str2[indexI-1]
         align_str1 += '-'
-        total_score += gap_penalty
         indexI -= 1
 
     align_str1 = align_str1[::-1]
     align_str2 = align_str2[::-1]
 
-    res_str = align_str1 + align_str2
-
-    print("the final string is .....", res_str[:51], '...', res_str[-50:])
-
     print("the first string alignment path is ", align_str1)
 
     print("the second string alignment path is", align_str2)
-
-    print("The total score....", total_score)
 
     return score[i][j]
 
@@ -226,12 +213,94 @@ print(cost_generator(str1, str2))
     elif OPT_score == bottom_gap:
         return OPT_cost(score[:l1-2][:l2], l1-1, l2)
 '''
+
 '''
+Temp-code
 for i in range(r):
 score_matrix.append([])
 for j in range(c):
 score_matrix[-1].append(0)
+
+
+"AA" "GT" "TA" "AG"
+"AA"  "TA"
+"A" "A"  "T" "A"
+"A" "T" +1
+"A" "A" +0
+
+
+
+"GT"  "AG"
 '''
+'''
+def sequence(str1, str2):
+
+    l1 = len(str1)
+    l2 = len(str2)
+
+    points = sequence(str1, str2, 0, 0, l1, l2)
+
+    print("Points: {}".format(str(points)))
+'''
+
+'''def sequence(str1, str2, i, j, l1, l2):
+
+    if i==l1:
+        return l2-j
+
+    if j==l2:
+        return l1-i
+
+    if i==l1 and j==l2:
+        return 0
+
+    if str1[i] == str2[j]:
+        return sequence(str1, str2, i+1, j+1, l1, l2)
+
+    a = sequence(str1, str2, i+1, j, l1, l2) + 1
+    b = sequence(str1, str2, i, j+1, l1, l2) + 1
+
+    c = sequence(str1, str2, i+1, j+1, l1, l2) + 1
+
+    return min(a, b, c)
+
+
+def iterative(str1, str2):
+
+    mem = []
+
+    print(str1)
+    print(str2)
+
+    l1 = len(str1) + 1
+    l2 = len(str2) + 1
+
+    for i in range(0, l1):
+        temp = []
+        for j in range(0, l2):
+            temp.append(0)
+
+        mem.append(temp)
+
+    for i in range(1, l2):
+        mem[0][i] = mem[0][i-1] + gap_penalty
+
+    for i in range(1, l1):
+        mem[i][0] = mem[i-1][0] + gap_penalty
+
+    for i in range(1, l1):
+        for j in range(1, l2):
+
+            if str1[i-1] == str2[j-1]:
+                mem[i][j] = mem[i-1][j-1]
+            else:
+                mis_match = align_score(str1[i-1], str2[j-1])
+                # print(mis_match)
+                mem[i][j] = min(mem[i-1][j]+gap_penalty, mem[i][j-1]+gap_penalty, mem[i-1][j-1]+mis_match)
+
+    return mem[l1-1][l2-1]'''
+
+#print(iterative(str1, str2))
 
     
     
